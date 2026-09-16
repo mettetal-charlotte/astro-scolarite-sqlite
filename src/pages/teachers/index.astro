@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import db from "../../lib/db";
+const rows = db
+    .prepare(
+        "SELECT teachers_number,last_name,first_name,email FROM teachers ORDER BY teachers_number",
+    )
+    .all();
+---
+
+<Layout title="Professeurs"
+    ><h1>Professeurs</h1><table>
+        <thead
+            ><tr
+                ><th>Numéro Professeurs</th><th>Nom de famille</th><th
+                    >Prénom</th
+                ><th>Email</th></tr
+            ></thead
+        ><tbody
+            >{
+                rows.map((c) => (
+                    <tr>
+                        <>
+                            <td>{c.teachers_number}</td>
+                            <td>{c.last_name}</td>
+                            <td>{c.first_name}</td>
+                            <td>{c.email}</td>
+                        </>
+                    </tr>
+                ))
+            }</tbody>
+    </table></Layout
+>
