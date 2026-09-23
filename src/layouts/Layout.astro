@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-const { title = "Scolarité" } = Astro.props;
+const { title = "Scolarité - version automatique" } = Astro.props;
 ---
 
 <html lang="fr">
@@ -17,8 +17,8 @@ const { title = "Scolarité" } = Astro.props;
                     href="/students">Étudiants</a
                 ><a href="/formations">Formations</a><a href="/courses">Cours</a
                 ><a href="/registrations">Inscriptions</a>
-                <a href="/teachers"
-                    >Enseignants</a>
+                <a href="/teachers">Enseignants</a>
             </div>
-        </nav><main class="container"><slot /></main></body>
+        </nav><main class="container"><slot /></main></body
+    >
 </html>
