@@ -8,51 +8,46 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  deploy:
-
-    runs-on: ubuntu-latest
-
+deploy:
+  runs-on: ubuntu-latest
     steps:
-
-      - name: Deploy on Ubuntu server
+    - name: Deploy on Ubuntu server
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
 
-         script: |
-              set -e
+            echo "======================================"
+            echo "Début du déploiement"
+            echo "======================================"
 
-              echo "======================================"
-              echo "Début du déploiement"
-              echo "======================================"
+            cd /var/www/scolarite/astro-scolarite-sqlite
 
-              cd /var/www/scolarite/astro-scolarite-sqlite
+            echo "Mise à jour du code..."
+            git pull origin
 
-              echo "Mise à jour du code..."
-              git pull origin
-              
-              export BUN_INSTALL="$HOME/.bun"
-              export PATH="$BUN_INSTALL/bin:$PATH"
+            export BUN_INSTALL="$HOME/.bun"
+            export PATH="$BUN_INSTALL/bin:$PATH"
 
-              echo "Installation des dépendances..."
-              bun ci
+            echo "Installation des dépendances..."
+            bun ci
 
-              echo "Compilation Astro..."
-              bun run --bun build
+            echo "Compilation Astro..."
+            bun run --bun build
 
-              echo "Redémarrage de l'application..."
-              sudo systemctl restart scolarite
+            echo "Redémarrage de l'application..."
+            sudo systemctl restart scolarite
 
-              echo "Vérification du service..."
-              sudo systemctl status scolarite
+            echo "Vérification du service..."
+            sudo systemctl status scolarite
 
-              echo "Health check..."
-              curl --fail http://localhost:3000/
+            echo "Health check..."
+            curl --fail http://localhost:3000/
 
-              echo "======================================"
-              echo "Déploiement terminé"
-              echo "======================================"
+            echo "======================================"
+            echo "Déploiement terminé"
+            echo "======================================"
